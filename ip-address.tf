@@ -8,7 +8,7 @@ data "http" "public_ip" {
 data "external" "private_ip_linux" {
   count       = local.is_linux ? 1 : 0
   working_dir = var.working_dir == null ? path.module : var.working_dir
-  program     = [
+  program = [
     "bash", "-c",
     "IP=$(hostname -I | awk '{print $1}'); printf '{\"private_ip\":\"%s\"}' \"$IP\""
   ]
@@ -28,6 +28,6 @@ data "external" "private_ip_windows" {
 
 
 locals {
-    private_ip = local.is_linux ? data.external.private_ip_linux[0].result.private_ip : data.external.private_ip_windows[0].result.private_ip
-    public_ip  = chomp(data.http.public_ip.response_body)
+  private_ip = local.is_linux ? data.external.private_ip_linux[0].result.private_ip : data.external.private_ip_windows[0].result.private_ip
+  public_ip  = chomp(data.http.public_ip.response_body)
 }
